@@ -55,8 +55,9 @@
 <body>
   <div id="text">
     <h2>Déconfinons : limite de 100 km</h2>
-    <div id="explain">Cliquer sur la carte pour ajouter un invité puis déplacer son marker. Cliquer sur le marker pour
-      supprimer l'invité.</div>
+    <div id="explain">Cliquer sur la carte pour ajouter des repères et déplacer-les au besoin. Cliquer sur un repère
+      pour
+      le supprimer.</div>
   </div>
   <div id="map">
   </div>
@@ -99,7 +100,7 @@
     }
     window.onload = () => {
       initMap();
-      document.getElementById("map").style.height = document.body.clientHeight - document.getElementById('text').clientHeight + 'px';
+      document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
     };
   </script>
 
