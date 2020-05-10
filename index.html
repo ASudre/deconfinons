@@ -68,25 +68,23 @@
   <script type="text/javascript">
     const initLat = 46;
     const initLon = 2;
-    var myMap = null;
-    let index = 0;
     let areas = [];
     const initMap = () => {
-      myMap = L.map("map").setView([initLat, initLon], 6);
+      const myMap = L.map("map").setView([initLat, initLon], 6);
       L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
         attribution: "données © <a href=\'//osm.org/copyright\'>OpenStreetMap</a>/ODbL - rendu <a href=\'//openstreetmap.fr\'>OSM France</a>",
         minZoom: 1,
         maxZoom: 20
       }).addTo(myMap);
       myMap.on("click", (e) => {
-        addMarker(e.latlng.lat, e.latlng.lng);
+        addArea(myMap, e.latlng.lat, e.latlng.lng);
       });
       return myMap;
     }
-    const addMarker = (lat, lng) => {
+    const addArea = (map, lat, lng) => {
       let area = {};
-      area.circle = new L.circle([lat, lng], { radius: 100000 }).addTo(myMap);
-      area.marker = new L.marker([lat, lng], { draggable: true }).addTo(myMap);
+      area.circle = new L.circle([lat, lng], { radius: 100000 }).addTo(map);
+      area.marker = new L.marker([lat, lng], { draggable: true }).addTo(map);
       area.marker.on("dragend", (event) => {
         const marker = event.target;
         const position = marker.getLatLng();
@@ -98,16 +96,16 @@
         areas[id].circle.remove();
         areas[id].marker.remove();
       });
-      area.marker.id = index;
-      areas[index] = area;
-      index++;
+      area.marker.id = areas.length;
+      areas.push(area);
     }
     window.onload = () => {
       const map = initMap();
+      // hack (100% height not working on leaflet)
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
         map.setView([position.coords.latitude, position.coords.longitude], 7);
-        addMarker(position.coords.latitude, position.coords.longitude);
+        addArea(map, position.coords.latitude, position.coords.longitude);
       });
     };
   </script>
