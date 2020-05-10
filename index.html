@@ -97,10 +97,14 @@
         areas[index] = area;
         index++;
       });
+      return myMap;
     }
     window.onload = () => {
-      initMap();
+      const map = initMap();
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
+      navigator.geolocation.getCurrentPosition((position) => {
+        map.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
+      });
     };
   </script>
 
