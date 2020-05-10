@@ -72,7 +72,7 @@
     let index = 0;
     let areas = [];
     const initMap = () => {
-      myMap = L.map("map").setView([initLat, initLon], 7);
+      myMap = L.map("map").setView([initLat, initLon], 6);
       L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
         attribution: "données © <a href=\'//osm.org/copyright\'>OpenStreetMap</a>/ODbL - rendu <a href=\'//openstreetmap.fr\'>OSM France</a>",
         minZoom: 1,
@@ -106,7 +106,7 @@
       const map = initMap();
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
-        map.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
+        map.setView([position.coords.latitude, position.coords.longitude], 7);
         addMarker(position.coords.latitude, position.coords.longitude);
       });
     };
