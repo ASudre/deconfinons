@@ -72,38 +72,42 @@
     let index = 0;
     let areas = [];
     const initMap = () => {
-      myMap = L.map("map").setView([initLat, initLon], 6);
+      myMap = L.map("map").setView([initLat, initLon], 7);
       L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
         attribution: "données © <a href=\'//osm.org/copyright\'>OpenStreetMap</a>/ODbL - rendu <a href=\'//openstreetmap.fr\'>OSM France</a>",
         minZoom: 1,
         maxZoom: 20
       }).addTo(myMap);
       myMap.on("click", (e) => {
-        let area = {};
-        area.circle = new L.circle(e.latlng, { radius: 100000 }).addTo(myMap);
-        area.marker = new L.marker(e.latlng, { draggable: true }).addTo(myMap);
-        area.marker.on("dragend", (event) => {
-          const marker = event.target;
-          const position = marker.getLatLng();
-          area.circle.setLatLng(new L.LatLng(position.lat, position.lng));
-          area.marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: true });
-        });
-        area.marker.on("click", (event) => {
-          const { id } = event.target;
-          areas[id].circle.remove();
-          areas[id].marker.remove();
-        });
-        area.marker.id = index;
-        areas[index] = area;
-        index++;
+        addMarker(e.latlng.lat, e.latlng.lng);
       });
       return myMap;
+    }
+    const addMarker = (lat, lng) => {
+      let area = {};
+      area.circle = new L.circle([lat, lng], { radius: 100000 }).addTo(myMap);
+      area.marker = new L.marker([lat, lng], { draggable: true }).addTo(myMap);
+      area.marker.on("dragend", (event) => {
+        const marker = event.target;
+        const position = marker.getLatLng();
+        area.circle.setLatLng(new L.LatLng(position.lat, position.lng));
+        area.marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: true });
+      });
+      area.marker.on("click", (event) => {
+        const { id } = event.target;
+        areas[id].circle.remove();
+        areas[id].marker.remove();
+      });
+      area.marker.id = index;
+      areas[index] = area;
+      index++;
     }
     window.onload = () => {
       const map = initMap();
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
         map.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
+        addMarker(position.coords.latitude, position.coords.longitude);
       });
     };
   </script>
