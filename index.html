@@ -126,6 +126,7 @@
     }
     window.onload = () => {
       const map = initMap();
+      L.control.scale({ position: "topright" }).addTo(map);
       // hack (100% height not working on leaflet)
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
