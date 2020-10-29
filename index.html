@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description"
-    content="Pour le déconfinement, trouvez votre zone à 100km autour de vous sur une carte, et voyez si vous pouvez rejoindre vos proches.">
+    content="Pour le déconfinement, trouvez votre zone à 1km autour de vous sur une carte, et voyez si vous pouvez rejoindre vos proches.">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
@@ -79,7 +79,7 @@
       src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
   </a>
   <div id="text">
-    <h2>Déconfinons : limite de 100 km</h2>
+    <h2>Déconfinons : limite de 1km</h2>
     <div id="explain">Cliquer sur la carte pour ajouter des repères. Les déplacer au besoin. Cliquer sur un repère
       pour
       le supprimer.</div>
@@ -108,7 +108,7 @@
     }
     const addArea = (map, lat, lng) => {
       let area = {};
-      area.circle = new L.circle([lat, lng], { radius: 100000 }).addTo(map);
+      area.circle = new L.circle([lat, lng], { radius: 1000 }).addTo(map);
       area.marker = new L.marker([lat, lng], { draggable: true }).addTo(map);
       area.marker.on("dragend", (event) => {
         const marker = event.target;
@@ -130,7 +130,7 @@
       // hack (100% height not working on leaflet)
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
-        map.setView([position.coords.latitude, position.coords.longitude], 7);
+        map.setView([position.coords.latitude, position.coords.longitude], 14);
         addArea(map, position.coords.latitude, position.coords.longitude);
       });
     };
