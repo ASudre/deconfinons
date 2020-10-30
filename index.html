@@ -101,9 +101,22 @@
         minZoom: 1,
         maxZoom: 20
       }).addTo(myMap);
-      myMap.on("click", (e) => {
-        addArea(myMap, e.latlng.lat, e.latlng.lng);
-      });
+      let isDblClick = false;
+      const dblClickTimeout = 500;
+      myMap
+        .on("click", (e) => {
+          setTimeout(() => {
+            if(!isDblClick) {
+              addArea(myMap, e.latlng.lat, e.latlng.lng);
+            }
+          }, dblClickTimeout)
+        })
+        .on("dblclick", () => {
+          isDblClick = true;
+          setTimeout(() => {
+            isDblClick = false;
+          }, dblClickTimeout)
+        });
       return myMap;
     }
     const addArea = (map, lat, lng) => {
