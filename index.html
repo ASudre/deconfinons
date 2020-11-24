@@ -79,7 +79,7 @@
       src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
   </a>
   <div id="text">
-    <h2>Déconfinons : limite de 1km</h2>
+    <h2>Déconfinons : limite de 20km</h2>
     <div id="explain">Cliquer sur la carte pour ajouter des repères. Les déplacer au besoin. Cliquer sur un repère
       pour
       le supprimer.</div>
@@ -121,7 +121,7 @@
     }
     const addArea = (map, lat, lng) => {
       let area = {};
-      area.circle = new L.circle([lat, lng], { radius: 1000 }).addTo(map);
+      area.circle = new L.circle([lat, lng], { radius: 20000 }).addTo(map);
       area.marker = new L.marker([lat, lng], { draggable: true }).addTo(map);
       area.marker.on("dragend", (event) => {
         const marker = event.target;
@@ -143,7 +143,7 @@
       // hack (100% height not working on leaflet)
       document.getElementById("map").style.height = `${document.body.clientHeight - document.getElementById('text').clientHeight}px`;
       navigator.geolocation.getCurrentPosition((position) => {
-        map.setView([position.coords.latitude, position.coords.longitude], 14);
+        map.setView([position.coords.latitude, position.coords.longitude], 10);
         addArea(map, position.coords.latitude, position.coords.longitude);
       });
     };
